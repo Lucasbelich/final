@@ -1,0 +1,26 @@
+#idForm{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    gap: 20px
+    
+}
+#greeting{
+    display: flex;
+    justify-content: center
+}
+#divGames{
+    display: flex;
+    justify-content:space-around;
+    margin: 0% 5% 0% 5%;
+}
+#idcart{
+    margin: 0% 20% 0% 20%
+}
+
+#nameForm, #surnameForm{
+    width: 200px;
+
+}
+
+

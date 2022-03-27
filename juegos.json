@@ -1,0 +1,32 @@
+[
+        {
+            "id": 1,
+            "nombre": "Grand Theft Auto 5",
+            "precio": 5000,
+            "img": "gta-5.jpg"
+        },
+        {
+            "id": 2,
+            "nombre": "FIFA 22",
+            "precio": 9000,
+            "img": "fifa-22.jpg"
+        },
+        {
+            "id": 3,
+            "nombre": "Call of Duty MW",
+            "precio": 3000,
+            "img": "cod.jpg"
+        },
+        {
+            "id": 4,
+            "nombre": "Forza Horizon 5",
+            "precio": 10000,
+            "img": "forza-horizon-5.jpg"
+        },
+        {
+            "id": 5,
+            "nombre": "Battlefield 2042",
+            "precio": 11000,
+            "img": "bf-2042.jpg"
+        }
+]
