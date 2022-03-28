@@ -21,34 +21,6 @@ items.addEventListener("click", (e) => {
   btnAction(e);
 });
 
-/* const juego1 = {
-  id: 1,
-  nombre: `Grand Theft Auto 5`,
-  precio: 5000,
-};
-const juego2 = {
-  id: 2,
-  nombre: `FIFA 22`,
-  precio: 9000,
-};
-const juego3 = {
-  id: 3,
-  nombre: `Call of Duty MW`,
-  precio: 3000,
-};
-const juego4 = {
-  id: 4,
-  nombre: `Forza Horizon 5`,
-  precio: 10000,
-};
-const juego5 = {
-  id: 5,
-  nombre: `Battlefield 2042`,
-  precio: 11000,
-};
-
-const juegos = [juego1, juego2, juego3, juego4, juego5]; */
-
 const welcome = () => {
   let formPerson = document.getElementById("idForm");
   let inputName = document.getElementById("nameForm");
@@ -83,22 +55,15 @@ const userGameSelector = () => {
     });
   });
 
-  /* juegos.forEach((juego, i) => {
-    divGames.innerHTML += `
-            <div class="card" id="juego${i}" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${juego.nombre}</h5>
-                    <p class="card-text">${juego.precio}</p>
-                    <button id="${juego.id}" class="btn btn-primary" > Comprar </button>
-                    </div>
-                </div>
-            `;
-  }); */
-
   let addCart = (e) => {
     if (e.target.classList.contains("btn-primary")) {
       setCart(e.target.parentElement);
-      sweetToast(`green`, `success`, `bottom-start`, `Se ha añadido un producto`);
+      sweetToast(
+        `green`,
+        `success`,
+        `bottom-start`,
+        `Se ha añadido un producto`
+      );
     }
   };
 };
@@ -170,6 +135,15 @@ const showFooter = () => {
     showCart();
     sweetAlert(`error`, `El carrito ha sido eliminado`);
   });
+
+  const payOut = document.getElementById("payOut");
+  payOut.addEventListener(`click`, () => {
+    if(!cart == 0){
+      sweetPay();
+    }
+    cart = {};
+    showCart();
+  });
 };
 
 const btnAction = (e) => {
@@ -180,7 +154,7 @@ const btnAction = (e) => {
     //optimizacion utilizando sugar syntax, operador++
     /* product.cantidad = cart[e.target.id].cantidad + 1; */
     product.cantidad++;
-    // utilizo operador avanzado spread
+    // utilizo operador avanzado spread para insertar contenido
     cart[e.target.id] = { ...product };
     showCart();
     sweetToast(`green`, `success`, `bottom-start`, `Se ha añadido un producto`);
@@ -208,7 +182,7 @@ if (localStorage.getItem("cart")) {
 }
 //El setItem ubicado dentro de la funcion showCart para obtenerlo de una forma dinamica y no cargarlo de a uno.
 
-//Incorporacion de librerias
+//Incorporacion de librerias (notificaciones, alertas)
 const sweetAlert = (icono, texto) => {
   Swal.fire({
     icon: icono,
@@ -242,6 +216,13 @@ const sweetToast = (color, icono, posicion, texto) => {
     hideClass: {
       popup: "animate__animated animate__bounceOutRight ",
     },
+  });
+};
+
+const sweetPay = () => {
+  Swal.fire({
+    title: "La compra ha sido realizada correctamente",
+    icon: "success",
   });
 };
 
