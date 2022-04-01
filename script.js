@@ -4,6 +4,15 @@
 // 3) Carro de compras
 // 4) Almacenar carrito en localStorage
 
+//Incorporacion de Fetch
+
+async function getGames() {
+  const response = await fetch("./juegos.json");
+  return await response.json();
+}
+
+//Declaraciones
+
 const items = document.getElementById("items");
 const footer = document.getElementById("footer");
 const templateFooter = document.getElementById("template-footer").content;
@@ -11,15 +20,11 @@ const templateCart = document.getElementById("template-cart").content;
 const fragment = document.createDocumentFragment();
 let cart = {};
 
-//Incorporacion de Fetch
-async function getGames() {
-  const response = await fetch("./juegos.json");
-  return await response.json();
-}
-
 items.addEventListener("click", (e) => {
   btnAction(e);
 });
+
+//Bienvenida de la tienda
 
 const welcome = () => {
   let formPerson = document.getElementById("idForm");
@@ -32,6 +37,8 @@ const welcome = () => {
     greeting.innerHTML = `Bienvenido ${inputName.value} ${inputSurname.value}`;
   });
 };
+
+//Seleccion de producto
 
 const userGameSelector = () => {
   let divGames = document.getElementById("divGames");
@@ -68,6 +75,7 @@ const userGameSelector = () => {
   };
 };
 
+//Seteo del carro tomando las propiedades del objeto(productos)
 const setCart = (juegos) => {
   const product = {
     id: juegos.querySelector(".btn-primary").id,
@@ -84,6 +92,7 @@ const setCart = (juegos) => {
   showCart();
 };
 
+//renderizado del carro de compras
 const showCart = () => {
   items.innerHTML = "";
   Object.values(cart).forEach((juegos) => {
@@ -92,8 +101,8 @@ const showCart = () => {
     templateCart.querySelectorAll("td")[1].textContent = juegos.cantidad;
     templateCart.querySelector(".btn-info").id = juegos.id;
     templateCart.querySelector(".btn-danger").id = juegos.id;
-    templateCart.querySelector("span").textContent =
-      juegos.cantidad * juegos.precio;
+    templateCart.querySelector("span").textContent = juegos.cantidad * juegos.precio;
+    
     const clone = templateCart.cloneNode(true);
     fragment.appendChild(clone);
   });
@@ -101,9 +110,42 @@ const showCart = () => {
   items.appendChild(fragment);
   showFooter();
 
+  //Linea 193 del codigo(Explicacion)
   localStorage.setItem("cart", JSON.stringify(cart));
 };
 
+//Botones dentro del carro de compras
+const btnAction = (e) => {
+  //sumar elemento
+  if (e.target.classList.contains("btn-info")) {
+    const product = cart[e.target.id];
+    
+    //optimizacion utilizando sugar syntax, operador++
+    /* product.cantidad = cart[e.target.id].cantidad + 1; */
+    product.cantidad++;
+    // utilizo operador avanzado spread para insertar contenido
+    cart[e.target.id] = { ...product };
+    showCart();
+    sweetToast(`green`, `success`, `bottom-start`, `Se ha añadido un producto`);
+  }
+
+  if (e.target.classList.contains("btn-danger")) {
+    const product = cart[e.target.id];
+
+    //optimizacion utilizando sugar syntax, operador--
+    /* product.cantidad = cart[e.target.id].cantidad - 1; */
+    product.cantidad--;
+    if (product.cantidad === 0) {
+      delete cart[e.target.id];
+    }
+    showCart();
+    sweetToast(`red`, `error`, `bottom-start`, `Se ha eliminado un producto`);
+  }
+  //evitar la propagacion del evento
+  e.stopPropagation();
+};
+
+//footer del carro de compras
 const showFooter = () => {
   footer.innerHTML = "";
   if (Object.keys(cart).length === 0) {
@@ -138,49 +180,18 @@ const showFooter = () => {
 
   const payOut = document.getElementById("payOut");
   payOut.addEventListener(`click`, () => {
-    if(!cart == 0){
-      sweetPay();
-    }
     cart = {};
     showCart();
+    sweetPay();
   });
 };
 
-const btnAction = (e) => {
-  //sumar elemento
-  if (e.target.classList.contains("btn-info")) {
-    const product = cart[e.target.id];
-
-    //optimizacion utilizando sugar syntax, operador++
-    /* product.cantidad = cart[e.target.id].cantidad + 1; */
-    product.cantidad++;
-    // utilizo operador avanzado spread para insertar contenido
-    cart[e.target.id] = { ...product };
-    showCart();
-    sweetToast(`green`, `success`, `bottom-start`, `Se ha añadido un producto`);
-  }
-
-  if (e.target.classList.contains("btn-danger")) {
-    const product = cart[e.target.id];
-
-    //optimizacion utilizando sugar syntax, operador--
-    /* product.cantidad = cart[e.target.id].cantidad - 1; */
-    product.cantidad--;
-    if (product.cantidad === 0) {
-      delete cart[e.target.id];
-    }
-    showCart();
-    sweetToast(`red`, `error`, `bottom-start`, `Se ha eliminado un producto`);
-  }
-  //evitar la propagacion del evento
-  e.stopPropagation();
-};
-
+//LocalStorage
 if (localStorage.getItem("cart")) {
   cart = JSON.parse(localStorage.getItem("cart"));
   showCart();
+  //El setItem ubicado dentro de la funcion showCart para obtenerlo de una forma dinamica y no cargarlo de a uno.
 }
-//El setItem ubicado dentro de la funcion showCart para obtenerlo de una forma dinamica y no cargarlo de a uno.
 
 //Incorporacion de librerias (notificaciones, alertas)
 const sweetAlert = (icono, texto) => {
@@ -226,6 +237,7 @@ const sweetPay = () => {
   });
 };
 
+//Llamado de funciones predeterminadas en el inicio de la pagina
 welcome();
 userGameSelector();
 

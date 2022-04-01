@@ -1,8 +1,10 @@
 #idForm{
+    align-items: center;
     display: flex;
-    padding: 10px;
+    gap: 20px;
     justify-content: center;
-    gap: 20px
+    padding: 10px 100px;
+    
     
 }
 #greeting{
@@ -22,8 +24,8 @@
     width: 200px;
 
 }
-#payOut{
-    display: flex;
-    justify-content: center;
-    align-items: center
+h1.title{
+    flex: 1 1 auto;
+    letter-spacing: 10px
 }
+
